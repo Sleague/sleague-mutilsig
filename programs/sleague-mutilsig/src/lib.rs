@@ -97,8 +97,11 @@ pub mod sleague_mutilsig {
         let league = &ctx.accounts.league;
         let tx = &mut ctx.accounts.transaction;
         let league_key = league.key();
+
         require!(matches!(tx.state, State::Accepted), ErrorCode::TransactionHasNotAccepted);
-        
+
+        tx.state = State::Execed;
+
         let ix = Instruction {
             program_id: tx.program,
             accounts: tx.accounts.iter()
@@ -110,11 +113,7 @@ pub mod sleague_mutilsig {
         let signer = &[&seeds[..]];
         let accounts = ctx.remaining_accounts;
 
-        msg!("{:?}", ix);
-        msg!("{:?}", ctx.remaining_accounts);
         solana_program::program::invoke_signed(&ix, accounts, signer)?;
-
-        tx.state = State::Execed;
 
         Ok(())
     }

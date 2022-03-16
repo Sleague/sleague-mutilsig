@@ -4,7 +4,7 @@ import { PublicKey, Keypair, Transaction, AccountMeta } from '@solana/web3.js';
 import { Program } from '@project-serum/anchor';
 import { SleagueMutilsig } from '../target/types/sleague_mutilsig';
 
-describe('002-set-league', () => {
+describe('001-transfer-mutilsig', () => {
 
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.Provider.env());
@@ -62,7 +62,6 @@ describe('002-set-league', () => {
     });
 
     const txAccount = await program.account.transaction.fetch(txKey.publicKey);
-
     
     assert.ok(ix.data.equals(txAccount.data as Buffer));
     assert.ok(txAccount.program.equals(ix.programId));
